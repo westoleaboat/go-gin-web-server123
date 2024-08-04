@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+</head>
+<body>
+    <h1>{{ .message }}</h1>
+
+    <form id="inputForm">
+        <input type="text" id="userInput" name="userInput" placeholder="Enter text to translate" required>
+        <select id="sourceLang" name="sourceLang">
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <!-- Add more languages as needed -->
+        </select>
+        <select id="targetLang" name="targetLang">
+            <option value="fr">French</option>
+            <option value="en">English</option>
+            <!-- Add more languages as needed -->
+        </select>
+        <button type="submit">Translate</button>
+    </form>
+    <p id="result"></p>
+    <script>
+        document.getElementById('inputForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var input = document.getElementById('userInput').value;
+            var sourceLang = document.getElementById('sourceLang').value;
+            var targetLang = document.getElementById('targetLang').value;
+            console.log('User input:', input);
+
+            // Send the input to the backend
+            fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userInput: input, sourceLang: sourceLang, targetLang: targetLang })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response from server:', data);
+                document.getElementById('result').textContent = data.translatedText;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+    
+</body>
+</html>

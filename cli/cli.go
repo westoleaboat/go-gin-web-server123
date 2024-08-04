@@ -1,9 +1,10 @@
 package cli
 
-import(
-	"net/http"
+import (
 	"log"
+	"net/http"
 	"sync"
+
 	"github.com/Jeffail/gabs"
 )
 
